@@ -8,7 +8,6 @@ import { ThreeDots } from "react-loader-spinner";
 export default function PaginaInicial() {
   const { setUser } = useContext(UserContext);
   const [logando, setLogando] = useState(false);
-  const [disabled, setDisabled] = useState(false);
   const [objLogin, setObjLogin] = useState({
     email: "",
     password: "",
@@ -18,19 +17,17 @@ export default function PaginaInicial() {
   async function login(e) {
     e.preventDefault();
     setLogando(true);
-    setDisabled(true);
-    const URL =
-      "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login";
+    const URL = "http://localhost:5000/login";
     try {
       const promise = await axios.post(URL, objLogin);
       const { data } = promise;
-      setUser({ token: data.token, image: data.image });
-      navigate("/hoje");
+      console.log(data);
+      setUser({ token: data.token, name: data.name });
+      navigate("/registros");
     } catch (error) {
       console.log(error.response);
       console.log(error.response.status);
       alert("Houve falha no Login!");
-      setDisabled(false);
       setLogando(false);
     }
   }
@@ -38,14 +35,14 @@ export default function PaginaInicial() {
   return (
     <>
       <Container>
-        <H1>MyWallet</H1>
+        <h1>MyWallet</h1>
         <Form onSubmit={(e) => login(e)}>
           <input
             type="email"
             value={objLogin.email}
-            placeholder="email"
+            placeholder="E-mail"
             required
-            disabled={disabled}
+            disabled={logando}
             onChange={(e) =>
               setObjLogin({ ...objLogin, email: e.target.value })
             }
@@ -53,19 +50,19 @@ export default function PaginaInicial() {
           <input
             type="password"
             value={objLogin.password}
-            placeholder="senha"
+            placeholder="Senha"
             required
-            disabled={disabled}
+            disabled={logando}
             onChange={(e) =>
               setObjLogin({ ...objLogin, password: e.target.value })
             }
           />
-          <button disabled={disabled}>
+          <button disabled={logando}>
             {!logando ? "Entrar" : <ThreeDots color="#FFFFFF" />}
           </button>
         </Form>
-        <Link to={"/cadastro"}>
-          <p>Não tem uma conta? Cadastre-se</p>
+        <Link to={"/sign-up"}>
+          <p>Primeira vez? Cadastre-se!</p>
         </Link>
       </Container>
     </>
@@ -77,30 +74,54 @@ const Container = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  margin-top: 68px;
+  margin-top: 159px;
+  font-family: "Raleway";
 
   p {
-    font-size: 13.976px;
-    line-height: 17px;
+    font-family: "Raleway";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 18px;
+    text-decoration: none;
+    color: #ffffff;
     text-align: center;
-    text-decoration-line: underline;
-    color: #52b6ff;
   }
-`;
 
-const H1 = styled.h1`
-  font-family: "Saira Stencil One";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 32px;
-  line-height: 50px;
-  color: #ffffff;
+  h1 {
+    font-family: "Saira Stencil One";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 50px;
+    color: #ffffff;
+    margin-bottom: 24px;
+  }
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
   margin-bottom: 25px;
+
+  input {
+    width: 303px;
+    height: 45px;
+    margin-bottom: 13px;
+    background: #ffffff;
+    border: 1px solid #d5d5d5;
+    border-radius: 5px;
+    font-size: 19.976px;
+    line-height: 25px;
+    color: #000000;
+    padding-left: 10px;
+    font-family: "Raleway";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 23px;
+    color: #000000;
+  }
 
   button {
     width: 303px;
@@ -109,24 +130,8 @@ const Form = styled.form`
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-
-  input {
-    width: 303px;
-    height: 45px;
-    margin-bottom: 6px;
-    background: #ffffff;
-    border: 1px solid #d5d5d5;
+    background: #a328d6;
     border-radius: 5px;
-    font-size: 19.976px;
-    line-height: 25px;
-    color: #dbdbdb;
-    padding-left: 10px;
-  }
-
-  button {
-    background: #52b6ff;
-    border-radius: 4.63636px;
     font-size: 20.976px;
     line-height: 26px;
     text-align: center;

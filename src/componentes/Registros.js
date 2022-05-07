@@ -48,13 +48,15 @@ export default function Registros() {
         {moviments.map((moviment) => {
           return (
             <>
-              <p key={moviment._id}>
-                <span className="date">{moviment.date} </span>{" "}
-                {moviment.description}{" "}
+              <div key={moviment._id}>
+                <p>
+                  <span className="date">{moviment.date} </span>
+                  {moviment.description}
+                </p>
                 <Value className="value" isEntrada={moviment.isEntrada}>
                   {moviment.value.toFixed(2)}
                 </Value>
-              </p>
+              </div>
             </>
           );
         })}
@@ -110,7 +112,7 @@ const Container = styled.div`
     font-size: 26px;
     line-height: 31px;
     color: #ffffff;
-    width: 560px;
+    width: 510px;
     margin-bottom: 22px;
   }
 
@@ -146,7 +148,7 @@ const ContainerRegistros = styled.div`
   border-radius: 5px;
   position: relative;
 
-  p {
+  div {
     font-family: "Raleway";
     font-style: normal;
     font-weight: 400;
@@ -161,12 +163,13 @@ const ContainerRegistros = styled.div`
     margin-right: 30px;
   }
 
-  p:first-child {
+  div:first-child {
     margin-top: 23px;
   }
 
   .date {
     color: #c6c6c6;
+    margin-right: 5px;
   }
 
   .saldo {

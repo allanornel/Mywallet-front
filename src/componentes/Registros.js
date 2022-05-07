@@ -2,10 +2,13 @@ import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import UserContext from "../context/UserContext";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 export default function Registros() {
   const { user } = useContext(UserContext);
-  console.log(user);
   const [moviments, setMoviments] = useState([]);
+  const [saldo, setSaldo] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const URL = "http://localhost:5000/moviment";
@@ -14,13 +17,18 @@ export default function Registros() {
         Authorization: `Bearer ${user.token}`,
       },
     };
-    console.log(config);
-
     const promise = axios.get(URL, config);
     promise.then((response) => {
-      console.log(response);
       setMoviments(response.data);
+      let somatorio = 0;
+      response.data.forEach((moviment) =>
+        moviment.isEntrada
+          ? (somatorio += moviment.value)
+          : (somatorio -= moviment.value)
+      );
+      setSaldo(somatorio);
     });
+
     promise.catch((error) => console.log(error.data));
   }, [user.token]);
 
@@ -32,27 +40,44 @@ export default function Registros() {
       </header>
       <ContainerRegistros>
         {moviments.map((moviment) => {
+          console.log(moviment);
           return (
             <>
               <p key={moviment._id}>
                 <span className="date">{moviment.date} </span>{" "}
                 {moviment.description}{" "}
                 <Value className="value" isEntrada={moviment.isEntrada}>
-                  {moviment.value}
+                  {moviment.value.toFixed(2)}
                 </Value>
               </p>
             </>
           );
         })}
+        <div className="saldo">
+          <p>
+            SALDO{" "}
+            <Span isPositive={saldo >= 0 ? true : false}>
+              {saldo < 0 ? saldo.toFixed(2) * -1 : saldo.toFixed(2)}
+            </Span>
+          </p>
+        </div>
       </ContainerRegistros>
       <footer>
-        <div>
+        <div
+          onClick={() =>
+            navigate("/novaMovimentacao", { state: { isEntrada: true } })
+          }
+        >
           <ion-icon name="add-circle-outline"></ion-icon>
           <p>
             Nova <br /> entrada
           </p>
         </div>
-        <div>
+        <div
+          onClick={() =>
+            navigate("/novaMovimentacao", { state: { isEntrada: false } })
+          }
+        >
           <ion-icon name="remove-circle-outline"></ion-icon>
           <p>
             Nova <br /> saída
@@ -114,6 +139,7 @@ const ContainerRegistros = styled.div`
   height: 446px;
   background: #ffffff;
   border-radius: 5px;
+  position: relative;
 
   p {
     font-family: "Raleway";
@@ -123,13 +149,54 @@ const ContainerRegistros = styled.div`
     line-height: 19px;
     color: #000000;
     width: 100%;
+    margin-left: 12px;
+    margin-bottom: 7px;
+    display: flex;
+    justify-content: space-between;
+    margin-right: 30px;
+  }
+
+  p:first-child {
+    margin-top: 23px;
   }
 
   .date {
     color: #c6c6c6;
   }
+
+  .saldo {
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: space-between;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .saldo p {
+    font-family: "Raleway";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 20px;
+    color: #000000;
+  }
+
+  .saldo p span {
+    font-family: "Raleway";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 20px;
+  }
+`;
+
+const Span = styled.span`
+  color: ${(props) => (props.isPositive ? "#03AC00" : "#C70000")};
 `;
 
 const Value = styled.span`
   color: ${(props) => (props.isEntrada ? "#03AC00" : "#C70000")};
+  margin-right: 30px;
 `;

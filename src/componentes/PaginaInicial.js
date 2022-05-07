@@ -21,7 +21,6 @@ export default function PaginaInicial() {
     try {
       const promise = await axios.post(URL, objLogin);
       const { data } = promise;
-      console.log(data);
       setUser({ token: data.token, name: data.name });
       navigate("/registros");
     } catch (error) {

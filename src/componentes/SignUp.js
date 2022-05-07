@@ -92,6 +92,10 @@ const Container = styled.div`
   margin-top: 159px;
   font-family: "Raleway";
 
+  a {
+    text-decoration: none;
+  }
+
   p {
     font-family: "Raleway";
     font-style: normal;

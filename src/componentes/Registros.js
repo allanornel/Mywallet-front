@@ -45,29 +45,39 @@ export default function Registros() {
         ></ion-icon>
       </header>
       <ContainerRegistros>
-        {moviments.map((moviment) => {
-          return (
-            <>
-              <div key={moviment._id}>
-                <p>
-                  <span className="date">{moviment.date} </span>
-                  {moviment.description}
-                </p>
-                <Value className="value" isEntrada={moviment.isEntrada}>
-                  {moviment.value.toFixed(2)}
-                </Value>
-              </div>
-            </>
-          );
-        })}
-        <div className="saldo">
-          <p>
-            SALDO
-            <Span isPositive={saldo >= 0 ? true : false}>
-              {saldo < 0 ? saldo.toFixed(2) * -1 : saldo.toFixed(2)}
-            </Span>
-          </p>
-        </div>
+        {moviments.length === 0 ? (
+          <NaoHa>
+            <p>
+              Não há registros de <br></br> entrada ou saída
+            </p>
+          </NaoHa>
+        ) : (
+          <>
+            {moviments.map((moviment) => {
+              return (
+                <>
+                  <div key={moviment._id}>
+                    <p>
+                      <span className="date">{moviment.date} </span>
+                      {moviment.description}
+                    </p>
+                    <Value className="value" isEntrada={moviment.isEntrada}>
+                      {moviment.value.toFixed(2)}
+                    </Value>
+                  </div>
+                </>
+              );
+            })}
+            <div className="saldo">
+              <p>
+                SALDO
+                <Span isPositive={saldo >= 0 ? true : false}>
+                  {saldo < 0 ? (saldo * -1).toFixed(2) : saldo.toFixed(2)}
+                </Span>
+              </p>
+            </div>
+          </>
+        )}
       </ContainerRegistros>
       <footer>
         <div
@@ -141,6 +151,20 @@ const Container = styled.div`
   }
 `;
 
+const NaoHa = styled.div`
+  p {
+    font-family: "Raleway";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 23px;
+    text-align: center;
+    color: #868686;
+    margin-top: 180px;
+    margin-left: 60px;
+  }
+`;
+
 const ContainerRegistros = styled.div`
   width: 326px;
   height: 446px;
@@ -183,6 +207,11 @@ const ContainerRegistros = styled.div`
   }
 
   .saldo p {
+    width: 100%;
+    margin-left: 12px;
+    display: flex;
+    justify-content: space-between;
+    margin-right: 30px;
     font-family: "Raleway";
     font-style: normal;
     font-weight: 700;

@@ -17,7 +17,7 @@ export default function SignUp() {
   async function login(e) {
     e.preventDefault();
     setLogando(true);
-    const URL = "http://localhost:5000/sign-up";
+    const URL = "https://back-projeto13-mywallet-allan.herokuapp.com/sign-up";
     try {
       await axios.post(URL, objLogin);
       navigate("/");

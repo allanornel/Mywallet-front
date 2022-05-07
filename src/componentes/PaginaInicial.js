@@ -16,7 +16,7 @@ export default function PaginaInicial() {
   async function login(e) {
     e.preventDefault();
     setLogando(true);
-    const URL = "http://localhost:5000/login";
+    const URL = "https://back-projeto13-mywallet-allan.herokuapp.com/login";
     try {
       const promise = await axios.post(URL, objLogin);
       const { data } = promise;

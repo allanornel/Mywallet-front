@@ -19,7 +19,7 @@ export default function NovaMovimentacao() {
   async function postMovimentacao(e) {
     e.preventDefault();
     setLogando(true);
-    const URL = "http://localhost:5000/moviment";
+    const URL = "https://back-projeto13-mywallet-allan.herokuapp.com/moviment";
     const config = {
       headers: {
         Authorization: `Bearer ${user.token}`,

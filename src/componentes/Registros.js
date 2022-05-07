@@ -5,7 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export default function Registros() {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const [moviments, setMoviments] = useState([]);
   const [saldo, setSaldo] = useState(0);
   const navigate = useNavigate();
@@ -36,11 +36,16 @@ export default function Registros() {
     <Container>
       <header>
         <h1>Olá, {user.name}</h1>
-        <ion-icon name="log-out-outline"></ion-icon>
+        <ion-icon
+          name="log-out-outline"
+          onClick={() => {
+            setUser({});
+            navigate("/");
+          }}
+        ></ion-icon>
       </header>
       <ContainerRegistros>
         {moviments.map((moviment) => {
-          console.log(moviment);
           return (
             <>
               <p key={moviment._id}>
@@ -55,7 +60,7 @@ export default function Registros() {
         })}
         <div className="saldo">
           <p>
-            SALDO{" "}
+            SALDO
             <Span isPositive={saldo >= 0 ? true : false}>
               {saldo < 0 ? saldo.toFixed(2) * -1 : saldo.toFixed(2)}
             </Span>

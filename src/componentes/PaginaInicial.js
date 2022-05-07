@@ -13,7 +13,6 @@ export default function PaginaInicial() {
     password: "",
   });
   const navigate = useNavigate();
-
   async function login(e) {
     e.preventDefault();
     setLogando(true);

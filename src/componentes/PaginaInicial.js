@@ -25,7 +25,7 @@ export default function PaginaInicial() {
     } catch (error) {
       console.log(error.response);
       console.log(error.response.status);
-      alert("Houve falha no Login!");
+      alert("Houve falha no Login! " + error.response.data);
       setLogando(false);
     }
   }

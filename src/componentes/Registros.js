@@ -122,7 +122,7 @@ const Container = styled.div`
     font-size: 26px;
     line-height: 31px;
     color: #ffffff;
-    width: 510px;
+    width: 480px;
     margin-bottom: 22px;
   }
 
